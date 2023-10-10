@@ -1,0 +1,74 @@
+name: bloom-prod-pipeline
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: selfhosted-runner
+
+    env:
+      SSH_USER: pm2
+      SSH_HOST: 10.0.12.243
+      SSH_KEY: | 
+        -----BEGIN OPENSSH PRIVATE KEY-----
+        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
+        LmludGVybmFsAQID 
+        -----END OPENSSH PRIVATE KEY-----
+      APP: bloom-multilingual-server
+
+    steps:
+      - name: Checkout Target Repository
+        uses: actions/checkout@v2
+
+      - name: Clone Source Repository
+        run: git clone git@github.com:MyBloomGitAdmin/devops.git
+
+      - name: Run script on server
+        run: |
+          echo "$SSH_KEY" > ./key && chmod 600 ./key 
+          chmod +x ./devops/bloomcare/test.sh
+          ssh -i ./key/ $SSH_USER@$SSH_HOST 'bash -s' < ./devops/bloomcare/test.sh
+          rm -rf ./devops
+
+      - name: SSH Server 
+        run: | 
+          ssh -i key $SSH_USER@$SSH_HOST  "
+          cd /app/pm2
+          pm2 reload $APP "
