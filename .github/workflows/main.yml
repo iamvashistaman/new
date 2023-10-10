@@ -2,7 +2,7 @@ name: bloom-prod-pipeline
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
